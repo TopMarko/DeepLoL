@@ -2,9 +2,10 @@ from django.db import models
 
 # TODO: When API key changes, so do the IDs because they are all encrypted with the key
 # TODO: Make a test to ensure all these points are good to go https://riot-api-libraries.readthedocs.io/en/latest/ids.html
+#                                                             https://www.riotgames.com/en/DevRel/player-universally-unique-identifiers-and-a-new-security-layer
 
 # Create your models here.
-# TODO: make these fields mandatory
+# TODO: maybe make region a choice field?
 class Summoner(models.Model):
     region = models.CharField(max_length=4)
     accountId = models.CharField(max_length=56)
@@ -14,3 +15,7 @@ class Summoner(models.Model):
     summonerId = models.CharField(max_length=63)
     puuid = models.CharField(max_length=78, primary_key=True)
     summonerLevel = models.BigIntegerField()
+
+    class Meta:
+        unique_together = (('region', 'summonerId'),
+                           ('region', 'accountId'))
