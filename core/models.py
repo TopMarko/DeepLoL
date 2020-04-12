@@ -18,4 +18,5 @@ class Summoner(models.Model):
 
     class Meta:
         unique_together = (('region', 'summonerId'),
-                           ('region', 'accountId'))
+                           ('region', 'accountId'),
+                           ('region', 'name'))
