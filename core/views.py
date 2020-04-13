@@ -8,7 +8,6 @@ from riotwatcher import LolWatcher, ApiError
 
 from .models import Summoner
 
-# The API key is {settings.RG_API_KEY}
 # TODO: Make this a db thing?
 VALID_REGIONS = ['NA1', 'EUW1', 'KR']
 
@@ -16,12 +15,23 @@ VALID_REGIONS = ['NA1', 'EUW1', 'KR']
 watcher = LolWatcher(settings.RG_API_KEY)
 
 # Create your views here.
+
+def index(request):
+    return render(request, 'core/test.html', {})
+
 # TODO: Change function name to avoid confusion with model name
 def summoner(request, region, summoner_name):
     region = region.upper()
     summoner_name = summoner_name.upper()
+
+    # TODO: Verify that summoner name could potentially exist (follows riots naming rules)
     summoner_data = None
     summoner_object = None
+
+    # TODO: See if we have any of their match history stored
+    # TODO: Send whatever user match data we have with analytics, if we dont have any, send a page without any info and have them click a button that will send a 
+    #       request to the backend to get the data and do analytics and everything (a refresh button)
+    match_history = None
 
     if region in VALID_REGIONS:
         summoner_object = Summoner.objects.all().filter(name__iexact=summoner_name, region__iexact=region)[0]
@@ -38,16 +48,14 @@ def summoner(request, region, summoner_name):
                                        )
             summoner_object.save()
         
-        # return HttpResponse(f"Hello, world. You're at the Summoner page for {summoner_name} from {region}.<br/><br/><br/>{summoner_data}<br/><br/><br/>{test_qs}")
+
         template = loader.get_template('core/summoner.html')
         context = {
-            'summoner_info': summoner_object
+            'summoner_info': summoner_object,
+            'match_history': match_history
         }
         print(context)
         return render(request, 'core/summoner.html', context)
-
-        # TODO: Send whatever user match data we have with analytics, if we dont have any, send a page without any info and have them click a button that will send a 
-        #       request to the backend to get the data and do analytics and everything (a refresh button)
         
     else:
         # TODO: Have a proper page for this
