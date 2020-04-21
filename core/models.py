@@ -35,7 +35,7 @@ class Summoner(models.Model):
     summonerLevel = models.BigIntegerField()
 
     soloTier = models.CharField(
-        max_length=2,
+        max_length=12,
         choices=Tiers.choices,
         default=None,
         blank=True,
@@ -49,7 +49,7 @@ class Summoner(models.Model):
     soloInactive = models.BooleanField(default=False)
     soloFreshBlood = models.BooleanField(default=False)
     soloHotStreak = models.BooleanField(default=False)
-    soloLeagueId = models.CharField(max_length=100, blank=True, default='')
+    soloLeagueId = models.CharField(max_length=255, blank=True, default='')
 
     # TODO: Should soloMiniSeriesTarget be a choice of 3 or 5?
     # Maybe the max values should be 1 below their actual max since RiotAPI will never return the max because it would mean a series is over?
@@ -60,7 +60,7 @@ class Summoner(models.Model):
 
 
     flexTier = models.CharField(
-        max_length=2,
+        max_length=12,
         choices=Tiers.choices,
         default=None,
         blank=True,
@@ -74,7 +74,7 @@ class Summoner(models.Model):
     flexInactive = models.BooleanField(default=False)
     flexFreshBlood = models.BooleanField(default=False)
     flexHotStreak = models.BooleanField(default=False)
-    flexLeagueId = models.CharField(max_length=100, blank=True, default='')
+    flexLeagueId = models.CharField(max_length=255, blank=True, default='')
 
     # TODO: Should flexMiniSeriesTarget be a choice of 3 or 5?
     # Maybe the max values should be 1 below their actual max since RiotAPI will never return the max because it would mean a series is over?
