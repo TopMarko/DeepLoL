@@ -28,7 +28,6 @@ def summoner(request, region, summoner_name):
     if region in VALID_REGIONS:
         summoner_object = get_summoner_info(region, summoner_name)
 
-        template = loader.get_template('core/summoner.html')
         context = {
             'summoner_info': summoner_object,
             'match_history': match_history

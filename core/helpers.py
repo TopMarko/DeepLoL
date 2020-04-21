@@ -15,8 +15,6 @@ rank_dict = {
 
 def get_summoner_info(region, summoner_name):
     watcher = LolWatcher(settings.RG_API_KEY)
-    # region = region.upper() # Redundant
-    # summoner_name = summoner_name.upper()
 
     # TODO: Verify that summoner name could potentially exist (follows riots naming rules)
     summoner_data = None
