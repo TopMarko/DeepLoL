@@ -1,0 +1,20 @@
+{% load static %}
+{% include "core/layout/header.html" %}
+
+{% include "core/layout/sidebar.html" %}
+
+<div class="all-content-wrapper">
+
+    {% include "core/layout/navbar.html" %}
+
+
+    {% block content %}
+    
+    {% endblock %}
+
+</div>
+
+
+{% include "core/layout/footer.html" %}
+
+
