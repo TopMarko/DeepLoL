@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 # TODO: maybe make region a choice field?
+# TODO: Add a field for last time updated/refreshed
 class Summoner(models.Model):
     class Tiers(models.TextChoices):
         IRON = 'IN', _('Iron')

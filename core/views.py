@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http.response import JsonResponse
 from django.conf import settings
 from django.template import loader
 from django.shortcuts import render
+from django.core import serializers
 
 from riotwatcher import LolWatcher, ApiError
 
 from .models import Summoner
-from .helpers import get_summoner_info
+from .helpers import get_summoner_info, refresh_summoner_info
 
 # TODO: Make this a db thing?
 VALID_REGIONS = ['NA1', 'EUW1', 'KR']
@@ -38,4 +40,13 @@ def summoner(request, region, summoner_name):
     else:
         # TODO: Have a proper page for this
         return HttpResponse(f"Invalid Region.")
+
+
+def update_summoner(request, region, summoner_name):
+    # TODO: Remove unnecessary information from being returned
+    # TODO: Check when Summoner was last refreshed and only refresh it once every 3 minutes   
+    summoner_object = refresh_summoner_info(region, summoner_name)
+    data = serializers.serialize('json', [summoner_object,])
+    
+    return JsonResponse(data, safe=False)
 

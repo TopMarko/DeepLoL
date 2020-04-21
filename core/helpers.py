@@ -72,3 +72,56 @@ def get_summoner_info(region, summoner_name):
         summoner_object = summoner_object[0]
 
     return summoner_object
+
+
+def refresh_summoner_info(region, summoner_name):
+    watcher = LolWatcher(settings.RG_API_KEY)
+
+    summoner_object = Summoner.objects.all().filter(name__iexact=summoner_name, region__iexact=region)
+    if not summoner_object:
+        summoner_object = Summoner()
+    else:
+        summoner_object = summoner_object[0]
+
+    summoner_data = watcher.summoner.by_name(region, summoner_name)
+    summoner_object = Summoner(name=summoner_data['name'],
+                                region=region.upper(),
+                                accountId=summoner_data['accountId'],
+                                profileIconId=summoner_data['profileIconId'],
+                                revisionDate=summoner_data['revisionDate'],
+                                summonerId=summoner_data['id'],
+                                summonerLevel=summoner_data['summonerLevel'],
+                                puuid=summoner_data['puuid']
+                                )
+
+    ranked_info = watcher.league.by_summoner(region, summoner_object.summonerId)
+    for info in ranked_info:
+            if info['queueType'] == 'RANKED_SOLO_5x5':
+                summoner_object.soloTier = info['tier']
+                summoner_object.soloRank = rank_dict[info['rank']]
+                summoner_object.soloLP = info['leaguePoints']
+                summoner_object.soloWins = info['wins']
+                summoner_object.soloLosses = info['losses']
+                summoner_object.soloVeteran = info['veteran']
+                summoner_object.soloInactive = info['inactive']
+                summoner_object.soloFreshBlood = info['freshBlood']
+                summoner_object.soloHotStreak = info['hotStreak']
+                summoner_object.soloLeagueId = info['leagueId']
+                # TODO: Add Miniseries stuff
+
+            elif info['queueType'] == 'RANKED_FLEX_SR':
+                summoner_object.flexTier = info['tier']
+                summoner_object.flexRank = rank_dict[info['rank']]
+                summoner_object.flexLP = info['leaguePoints']
+                summoner_object.flexWins = info['wins']
+                summoner_object.flexLosses = info['losses']
+                summoner_object.flexVeteran = info['veteran']
+                summoner_object.flexInactive = info['inactive']
+                summoner_object.flexFreshBlood = info['freshBlood']
+                summoner_object.flexHotStreak = info['hotStreak']
+                summoner_object.flexLeagueId = info['leagueId']
+                # TODO: Add Miniseries stuff
+    
+    summoner_object.save()
+
+    return summoner_object
