@@ -52,8 +52,6 @@ class Summoner(models.Model):
     soloHotStreak = models.BooleanField(default=False)
     soloLeagueId = models.CharField(max_length=255, blank=True, default='')
 
-    # TODO: Should soloMiniSeriesTarget be a choice of 3 or 5?
-    # Maybe the max values should be 1 below their actual max since RiotAPI will never return the max because it would mean a series is over?
     soloMiniSeriesTarget = models.PositiveIntegerField(default=None, blank=True, null=True, validators=[MaxValueValidator(5)])
     soloMiniSeriesWins = models.PositiveIntegerField(default=None, blank=True, null=True, validators=[MaxValueValidator(3)])
     soloMiniSeriesLosses = models.PositiveIntegerField(default=None, blank=True, null=True, validators=[MaxValueValidator(3)])
@@ -77,8 +75,6 @@ class Summoner(models.Model):
     flexHotStreak = models.BooleanField(default=False)
     flexLeagueId = models.CharField(max_length=255, blank=True, default='')
 
-    # TODO: Should flexMiniSeriesTarget be a choice of 3 or 5?
-    # Maybe the max values should be 1 below their actual max since RiotAPI will never return the max because it would mean a series is over?
     flexMiniSeriesTarget = models.PositiveIntegerField(default=None, blank=True, null=True, validators=[MaxValueValidator(5)])
     flexMiniSeriesWins = models.PositiveIntegerField(default=None, blank=True, null=True, validators=[MaxValueValidator(3)])
     flexMiniSeriesLosses = models.PositiveIntegerField(default=None, blank=True, null=True, validators=[MaxValueValidator(3)])
