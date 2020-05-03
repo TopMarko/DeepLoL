@@ -6,6 +6,13 @@ services:
     environment:
         POSTGRES_DB: "db"
         POSTGRES_HOST_AUTH_METHOD: "trust"
+  jupyter:
+    image: jupyter/datascience-notebook
+    ports:
+      - "8888:8888"
+    volumes: 
+      - ./notebook:/home/jovyan
+    container_name: jupyter-notebook-container
   web:
     build: .
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
