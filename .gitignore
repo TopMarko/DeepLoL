@@ -9,8 +9,8 @@ __pycache__/
 # VS Code
 .vscode/
 
-./notebook/.cache/*
-./notebook/.local/*
+notebook/.cache/*
+notebook/.local/*
 
 # Distribution / packaging
 .Python
