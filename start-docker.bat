@@ -1,3 +1,3 @@
 @ECHO OFF
 docker-compose restart
-docker-compose up
+docker-compose up web

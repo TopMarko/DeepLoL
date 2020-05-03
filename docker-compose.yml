@@ -6,7 +6,7 @@ services:
     environment:
         POSTGRES_DB: "db"
         POSTGRES_HOST_AUTH_METHOD: "trust"
-  jupyter:
+  notebook:
     image: jupyter/datascience-notebook
     ports:
       - "8888:8888"
@@ -14,11 +14,11 @@ services:
       - ./notebook:/home/jovyan
     container_name: jupyter-notebook-container
   web:
-    build: .
+    build: ./web
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     container_name: DeepLoLAlpha
     volumes:
-      - .:/DeepLoLAlpha
+      - ./web:/DeepLoLAlpha
     ports:
       - "8000:8000"
     depends_on:

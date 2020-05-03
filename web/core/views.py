@@ -35,7 +35,7 @@ def summoner(request, region, summoner_name):
             return HttpResponse(f"Summoner not found.")
         else:
             match_history = get_match_history_from_riot(region, summoner_object.accountId)
-            store_match_history(region, summoner_object, match_history)
+            # store_match_history(region, summoner_object, match_history)
 
             # match_ref_test_var = summoner_object.matches.all()[0].gameId
             # print(match_ref_test_var)
