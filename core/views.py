@@ -8,8 +8,8 @@ from django.core import serializers
 
 from riotwatcher import LolWatcher, ApiError
 
-from .models import Summoner
-from .helpers import get_summoner_info, refresh_summoner_info
+from .models import Summoner, MatchReference
+from .helpers import get_summoner_info, refresh_summoner_info, get_match_history_from_riot, store_match_history
 
 # TODO: Make this a db thing?
 VALID_REGIONS = ['NA1', 'EUW1', 'KR']
@@ -28,7 +28,19 @@ def summoner(request, region, summoner_name):
     region = region.upper()
 
     if region in VALID_REGIONS:
-        summoner_object = get_summoner_info(region, summoner_name)
+        exists, summoner_object = get_summoner_info(region, summoner_name)
+
+        if not exists:
+            # TODO: Return an error page
+            return HttpResponse(f"Summoner not found.")
+        else:
+            match_history = get_match_history_from_riot(region, summoner_object.accountId)
+            store_match_history(region, summoner_object, match_history)
+
+            # match_ref_test_var = summoner_object.matches.all()[0].gameId
+            # print(match_ref_test_var)
+           
+            pass
 
         context = {
             'summoner_info': summoner_object,
@@ -38,7 +50,7 @@ def summoner(request, region, summoner_name):
         return render(request, 'core/summoner.html', context)
         
     else:
-        # TODO: Have a proper page for this
+        # TODO: Return an error page
         return HttpResponse(f"Invalid Region.")
 
 
